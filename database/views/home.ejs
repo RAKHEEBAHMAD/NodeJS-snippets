@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .container {
+            width: 300px;
+        }
+
+        form {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+        }
+
+        form>* {
+            margin-top: 10px;
+        }
+
+        input {
+            padding: 10px;
+        }
+
+
+        .nav {
+            background: #000;
+            height: 60px;
+        }
+
+        .nav li {
+            display: inline-block;
+            list-style: none;
+            height: 60px;
+            line-height: 60px;
+            padding: 0 40px;
+        }
+
+        .nav li:hover {
+            background: red;
+            transition: background .3s;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="nav">
+        <ul>
+            <li><a href="/" class="nav-link">Home</a></li>
+            <li><a href="/display" class="nav-link"><em>Display</em></a></li>
+        </ul>
+    </div>
+    <div class="container">
+        <form action="/submit" method="POST">
+            <label for="uname">Enter Username: </label>
+            <input type="text" name="uname" id="uname">
+            <label for="email">Enter email: </label>
+            <input type="email" name="email" id="email">
+            <label for="msg">Enter message: </label>
+            <textarea type="text" name="msg" id="msg"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+
+</html>
