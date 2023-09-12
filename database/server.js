@@ -53,7 +53,6 @@ app.post('/submit',async(req,res)=>{
 })
 
 
-
 // ========================= (finding and parsing into the ejs file)
 app.get('/display',async(req,res)=>{ 
     try{

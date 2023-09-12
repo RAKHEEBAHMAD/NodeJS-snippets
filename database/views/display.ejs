@@ -11,10 +11,24 @@
             padding: 0;
             box-sizing: border-box;
         }
-        table,th,tr{
-            padding: 10px;
+        body{
+            width: 100%;
+            height: 100vh;
         }
-
+        .crads{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card{
+            padding: 10px;
+            width: 300px;
+            height: 200px;
+            border: 2px solid green;
+        }
+        .card > *{
+            margin: 10px;
+        }
         .nav {
             background: #000;
             height: 60px;
@@ -49,32 +63,20 @@
     </div>
     <h1 style="text-align: center;">Display</h1>
 
-    <table border="1">
-        <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>email</th>
-        <th>action</th>
-        </tr>
-        <% for( let index=0; index < all.length; index++ ) { %>
-        <tr>
-                <td>
-                    <%= all[index]._id %>
-                </td>
-                <td>
-                    <%= all[index].username %>
-                </td>
-                <td>
-                    <%= all[index].email %>
-                </td>
-                <td>
-                    <form action="/display/<%= all[index]._id %>?_method=DELETE" method="POST">
-                        <button type="submit">Delete</button>
+    <div class="crads">
+        <% for( let index = 0; index < all.length; index++ ) { %>
+            <div class="card">
+                <div class="id">id: <%= all[index]._id %></div>
+                <div class="name">name: <%= all[index].username %></div>
+                <div class="email">email: <%= all[index].email %></div>
+                <div class="form">
+                    <form action="/display/<%= all[index]._id%>?_method=DELETE">
+                        <button type="submit">delete</button>
                     </form>
-                </td>
-        </tr>
+                </div>
+            </div>
         <% } %>
-    </table>
+    </div>
 
 </body>
 
