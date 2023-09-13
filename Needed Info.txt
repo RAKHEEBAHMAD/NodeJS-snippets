@@ -1,0 +1,3 @@
+npm run "user-defined script in package-json" - for executing user defined script
+npm install "package-name" --save-dev - (for development purpose installation)
+npm install "package-name" -g - (for global installation)
