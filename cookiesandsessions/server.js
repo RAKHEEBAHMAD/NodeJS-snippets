@@ -29,11 +29,9 @@ app.get("/displaycookies", (req, res) => {
 
 app.get("/clearcookies", (req, res) => {
   const cookies = req.cookies;
-
   for (const cookieName in cookies) {
     res.clearCookie(cookieName);
   }
-
   res.send("All cookies cleared.");
 });
 
