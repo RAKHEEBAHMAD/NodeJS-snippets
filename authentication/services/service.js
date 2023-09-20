@@ -9,17 +9,16 @@ function validtoken() {
     if (!token) {
       return res.redirect("/login");
     }
-
     try {
       const decoded = jwt.verify(token, "supersecret");
       if (decoded === null) {
         return res.redirect("/login");
       }
       req.user = decoded;
-      next();
+      next()
     } catch (error) {
       console.log(error);
-      return res.redirect("/login");
+      res.redirect('/login')
     }
   };
 }
@@ -33,17 +32,20 @@ function isauthenticated() {
 
     try {
         const decoded = jwt.verify(token, "supersecret");
+        console.log(decoded)
         if (decoded === null) {
           next()
         }
         req.user = decoded;
-        return res.redirect('/')
+        return res.redirect('back')
       } catch (error) {
-        console.log(error);
+        console.log("error");
         next()
       }
 
   };
 }
+
+
 
 module.exports = { validtoken,isauthenticated};

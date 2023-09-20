@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const cookieparser = require("cookie-parser");
 const bodyparser = require('body-parser')
 const {validtoken,isauthenticated} = require('./services/service')
+const path = require('path')
+
 
 const app = express();
 mongoose
@@ -17,15 +19,15 @@ mongoose
     console.log(err);
   });
 
-
+app.use(express.static(path.join(__dirname, 'public')))
 app.set("view engine", "ejs");
 app.set("views", "./authentication/views");
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieparser());
 
 
-app.get("/",validtoken(), (req, res) => {
-  res.render("home");
+app.get("/",validtoken(),(req, res) => {
+  res.render("home",{user:req.user});
 });
 
 app.get("/login",isauthenticated(), (req, res) => {
@@ -33,13 +35,19 @@ app.get("/login",isauthenticated(), (req, res) => {
 });
 
 app.get("/signup",isauthenticated(), (req, res) => {
-  res.render("signup.ejs", { error: null });
+  res.render("signup", { error: null });
 });
 
-app.post("/signup", async (req, res) => {
+
+app.post("/user/signup", async (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
+  const pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+  if(!password.match(pattern))
+  {
+    return res.status(500).render("signup", { error: "Min 8 characters,least 1 uppercase letter and 1 lowercase letter and 1 number and 1 special character" });
+  }
   const hashedpassword = await bcrypt.hash(password, 10);
   try {
     const user = await authmodel.findOne({ email });
@@ -56,10 +64,18 @@ app.post("/signup", async (req, res) => {
         username: newuser.username,
         email: newuser.email,
       },
-      "supersecret"
+      "supersecret",{expiresIn:'15m'}
     );
-    res.cookie("sid", token,{secure:false});
-    console.log(req.cookies);
+    res.cookie("sid", token,{
+        maxAge: 60*60*24*7,
+        // expires works the same as the maxAge
+        // expires: new Date('01 12 2021'),
+        secure: false,
+        httpOnly: true,
+        sameSite: 'lax'
+    });
+    req.user = user
+    console.log(req.user)
     res.redirect("/");
   } catch (err) {
     console.log(err);
@@ -67,13 +83,8 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.get("/show-cookies", (req, res) => {
-    const cookies = req.cookies;
-    res.json(cookies);
-  });
-  
-
-app.post("/login", async (req, res) => {
+app.post("/user/login", async (req, res) => {
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   const { email, password } = req.body;
   try {
     const user = await authmodel.findOne({ email });
@@ -92,10 +103,17 @@ app.post("/login", async (req, res) => {
         email: user.email,
       },
       "supersecret"
-    );
+    ,{expiresIn:'15m'});
     user.token = token;
-    res.cookie("sid", token);
-    res.redirect("/");
+    res.cookie("sid", token,{
+        maxAge: 60*60*24*7,
+        // expires works the same as the maxAge
+        // expires: new Date('01 12 2021'),
+        secure: true,
+        httpOnly: true,
+        sameSite: 'lax'
+    });
+    return res.redirect('/')
   } catch (err) {
     console.error("Error:", err);
     res.status(500).send(err);
@@ -103,10 +121,27 @@ app.post("/login", async (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  const token = "sid";
-  res.clearCookie(token);
+  const cookies = req.cookies;
+  for (const cookieName in cookies) {
+    res.clearCookie(cookieName);
+  }
+
+  if (req.cookies.sid) {
+    const pastDate = new Date(0); // Setting to a past date
+    res.cookie("sid", "", {
+      expires: pastDate,
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+  }
+
   res.redirect("/login");
 });
+
+app.get('/check',validtoken(),(req,res)=>{
+    res.send('back')
+})
+
 
 app.listen(3000, () => {
   console.log("server listening");
