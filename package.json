@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./nodemailer/server.js"
+    "start": "nodemon OtpGeneration/server.js"
   },
   "author": "",
   "license": "ISC",
