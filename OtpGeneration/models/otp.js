@@ -12,7 +12,7 @@ const schema = mongoose.Schema({
     },
     expireAt: {
         type: Date,
-        expires: 1, // Expires documents after 5 seconds
+        expires: 10, // Expires documents after 5 seconds
     },
 }, { timestamps: true });
 

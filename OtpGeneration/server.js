@@ -17,11 +17,23 @@ app.get('/otp', async (req, res) => {
     await otpmodel.create({
         name: "rakheeb",
         email: "rakheeb",
-        otp: "12344312435454545255543543",
-        expireAt: new Date(Date.now() + 1000) // Set expireAt to 5 seconds in the future
+        otp: "10101010101010101010",
+        expireAt: new Date(Date.now() + 10000) // Set expireAt to 5 seconds in the future
     });
 
     res.send('created');
 });
+
+
+app.get('/verify',async(req,res)=>{
+
+    const check =await otpmodel.findOne({_id:'650c6e8fb9d95e6c46bb16d0'})
+    if(check)
+    {
+        res.send("yes")
+    }else{
+        res.send('no')
+    }
+})
 
 app.listen(3000);
