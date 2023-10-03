@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon OtpGeneration/server.js"
+    "start": "nodemon authentication/server.js"
   },
   "author": "",
   "license": "ISC",

@@ -47,16 +47,71 @@ app.post('/submit',async(req,res)=>{
       // Define the email content
       const mailOptions = {
         from: "rakheebahmad1905@gmail.com",
-        to: email, // Replace with the recipient's email address
+        to: email,
         subject: "Otp of rakheeb.com",
-        html: `here is your otp : ${otp}`,
+        html: `<!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <title>OTP Email</title>
+          <style>
+            /* Styles for the email body */
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f2f2f2;
+              margin: 0;
+              padding: 0;
+            }
+        
+            /* Styles for the container */
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #fff;
+              padding: 20px;
+              border-radius: 5px;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        
+            /* Styles for the heading */
+            h1 {
+              color: #007bff;
+            }
+        
+            /* Styles for the OTP box */
+            .otp-box {
+              background-color: #007bff;
+              color: #fff;
+              padding: 10px;
+              text-align: center;
+              font-size: 24px;
+              border-radius: 5px;
+            }
+        
+            /* Styles for the OTP text */
+            .otp {
+              font-size: 36px;
+              font-weight: bold;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>OTP Email</h1>
+            <p>Here is your OTP:</p>
+            <div class="otp-box">
+              <span class="otp">${otp}</span>
+            </div>
+          </div>
+        </body>
+        </html>`,
       };
     
       // Send the email
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
           console.log(error);
-          return res.render('form', { error: "Error sending email" });
+          return res.render('signup', { error: "Error sending email" });
         } else {
           console.log(info)
           return res.render('otp');

@@ -39,7 +39,6 @@ function isauthenticated() {
         req.user = decoded;
         return res.redirect('back')
       } catch (error) {
-        console.log("error");
         next()
       }
 

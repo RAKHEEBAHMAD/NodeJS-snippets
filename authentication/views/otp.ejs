@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Enter OTP</title>
     <style>
         * {
             margin: 0;
@@ -69,44 +69,25 @@
             margin-bottom: 10px;
             color: red;
         }
-        .account a{
-            text-decoration: none;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: green;
+        .caution{
+            color: grey;
+            opacity: 10px;
+            font-size: 15px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Login</h1>
-    <div class="container">
-        <form action="/user/login" method="POST">
-            <% if (error && error !== '') { %>
-                <div class="red"><%= error %></div>
-            <% } %>
-            <label for="email">Enter Email: </label>
-            <input type="email" name="email" id="email" required>
-            <label for="password">Enter Password: </label>
-            <input type="password" name="password" id="password" required>
-            <input type="checkbox" name="show" id="show" onclick="showpassword()">
-            <label for="show">showpassword</label></br></br>
-            <button type="submit">Submit</button>
-            <div class="account"><a href="/signup" target="_self">Don't Have an Account?</a></div>
-        </form>
-    </div>
-    <div class="account"><a href="/forgotpassword">Forgot Password?</a></div>
-    <script>
-        function showpassword()
-        {
-            const showpass = document.getElementById('password')
-            if(showpass.type=='password'){
-                showpass.type='text'
-            }else{
-                showpass.type='password'
-            }
-        }
-    </script>
+    <h1>Enter OTP</h1>
+    <form action="/verify" method="POST">
+        <div class="caution">OTP is valid for only 1 minute</div>
+        <label for="otp">OTP:</label>
+        <input type="text" id="otp" name="otp" required>
+        <br><br>
+        <button type="submit">Verify OTP</button>
+    </form>
+    <form action="/resendotp" method="POST">
+        <button type="submit">Resend OTP</button>
+    </form>
 </body>
 </html>
