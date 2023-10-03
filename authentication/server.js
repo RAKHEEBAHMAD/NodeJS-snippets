@@ -206,14 +206,9 @@ app.get('/deleteaccount',validtoken(),async(req,res)=>{
   return res.redirect('/logout')
 })
 
-
-// app.get('/:id',(req,res)=>{
-//   res.send('Hello this is id route')
-// })
-
-// app.get('*', function(req, res){
-//   res.sendFile(path.join(__dirname+'/public','/404.html'));
-// });
+app.get('*', function(req, res){
+  res.sendFile(path.join(__dirname+'/public','/404.html'));
+});
 
 app.listen(3000, () => {
   console.log("server listening");
